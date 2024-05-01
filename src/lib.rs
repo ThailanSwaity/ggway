@@ -130,3 +130,44 @@ fn print_query_json(json: JsonValue) {
         );
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn id_query() {
+        let query = Query {
+            id: Some("525".to_owned()),
+            platform: None,
+            giveaway_type: None,
+            sort_by: None,
+        };
+
+        let parameterized_url = query.to_parameterized_url();
+        let json_text = reqwest::blocking::get(parameterized_url)
+            .unwrap()
+            .text()
+            .unwrap();
+        let json = json::parse(&json_text).unwrap();
+        assert!(!json["title"].is_null());
+    }
+
+    #[test]
+    fn list_query() {
+        let query = Query {
+            id: None,
+            platform: Some("steam".to_owned()),
+            giveaway_type: Some("loot".to_owned()),
+            sort_by: Some("value".to_owned()),
+        };
+
+        let parameterized_url = query.to_parameterized_url();
+        let json_text = reqwest::blocking::get(parameterized_url)
+            .unwrap()
+            .text()
+            .unwrap();
+        let json = json::parse(&json_text).unwrap();
+        assert!(json.is_array());
+    }
+}
