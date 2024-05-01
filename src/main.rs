@@ -8,7 +8,7 @@ fn main() {
     let query = Query::new(&args);
 
     if let Err(e) = ggway::run(query) {
-        println!("Application error: {e}");
+        eprintln!("Application error: {e}");
         process::exit(1);
     }
 }
