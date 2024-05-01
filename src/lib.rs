@@ -85,12 +85,12 @@ impl Query {
 
 pub fn run(query: Query) -> Result<(), Box<dyn Error>> {
     let host_url = "https://gamerpower.com/api/giveaways";
-    println!("{:#?}", &query);
+    //    println!("{:#?}", &query);
 
     let parameter_string = query.to_parameter_string();
     let url = format!("{host_url}{parameter_string}");
 
-    println!("Full url string: {}", &url);
+    //    println!("Full url string: {}", &url);
 
     let body = reqwest::blocking::get(url)?.text()?;
     let json = json::parse(&body)?;
